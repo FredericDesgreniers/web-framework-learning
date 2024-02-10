@@ -1,12 +1,15 @@
-import { For, createSignal, createResource } from "solid-js";
+import { For, createSignal, createResource, createEffect } from "solid-js";
 import Pet from "./Pet";
+import createBreedResource from "./createBreedResource";
+
+const localCache = {};
 
 const SearchParams = () => {
   const animals = ["bird", "cat", "dog"];
   const [location, setLocation] = createSignal("");
   const [animal, setAnimal] = createSignal("");
   const [breed, setBreed] = createSignal("");
-  const [breeds, setBreeds] = createSignal([]);
+  const [breeds] = createBreedResource(animal);
 
   const [pets, { _, refetch }] = createResource(async () => {
     const res = await fetch(
@@ -42,7 +45,6 @@ const SearchParams = () => {
             value={animal}
             onChange={(e) => {
               setAnimal(e.target.value);
-              setBreeds([]);
               setBreed("");
             }}
           >
