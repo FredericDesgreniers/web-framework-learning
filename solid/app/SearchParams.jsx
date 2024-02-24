@@ -1,8 +1,7 @@
-import { For, createSignal, createResource, createEffect } from "solid-js";
+import { For, createSignal, createResource } from "solid-js";
 import Pet from "./Pet";
 import createBreedResource from "./createBreedResource";
-
-const localCache = {};
+import Results from "./Results";
 
 const SearchParams = () => {
   const animals = ["bird", "cat", "dog"];
@@ -13,7 +12,7 @@ const SearchParams = () => {
 
   const [pets, { _, refetch }] = createResource(async () => {
     const res = await fetch(
-      `http://pets-v2.dev-apis.com/pets?animal=${animal()}&location=${location()}&breed=${breed()}`
+      `http://pets-v2.dev-apis.com/pets?animal=${animal()}&location=${location()}&breed=${breed()}`,
     );
     const json = await res.json();
     return json.pets;
@@ -76,16 +75,7 @@ const SearchParams = () => {
         </label>
         <button>Submit</button>
       </form>
-      <For each={pets()}>
-        {(pet) => (
-          <Pet
-            name={pet.name}
-            animal={pet.animal}
-            breed={pet.breed}
-            key={pet.id}
-          />
-        )}
-      </For>
+      <Results pets={pets} />
     </>
   );
 };
