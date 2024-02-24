@@ -12,6 +12,7 @@ const Results = ({ pets }) => {
           images={pet.images}
           location={`${pet.city}, ${pet.state}`}
           data-index={pet.id}
+          id={pet.id}
         />
       )}
     </For>
